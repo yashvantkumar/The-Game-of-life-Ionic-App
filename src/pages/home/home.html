@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Life</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="createGameBox = true">
+        <ion-icon name='add' *ngIf="!createGameBox"></ion-icon>
+      </button>
+      <button ion-button icon-only>
+        <ion-icon name='exit'></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-menu [content]="content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Connected Players</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list *ngFor="let player of AllPlayers" class="connectedPlayer">{{player.name}}</ion-list>
+    </ion-content>
+</ion-menu>
+<ion-nav id="nav" #content [root]="rootPage"></ion-nav>
+
+<ion-content padding>
+  <div *ngIf="createGameBox">
+    <ion-card>
+      <ion-card-header>Join Game</ion-card-header>
+      <ion-card-content>
+        <ion-list>
+         <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Unique Id</ion-label>
+            <ion-input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unique_id"></ion-input>
+          </ion-item>
+           <ion-item>
+            <button ion-button full (click)="joinGame()">Join</button>
+          </ion-item>
+        </ion-list>      
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-card class="playerDetails" *ngIf="Game">
+      <ion-list>
+        <ion-list-header>
+          <h1 color="light">{{Game.name}}</h1>
+        </ion-list-header>
+        <hr>
+        <!-- <ion-item-divider color="light"></ion-item-divider> -->
+        <ion-item>
+          <ion-icon name="pricetag"></ion-icon>
+          Salary: {{Game.salary}}</ion-item>
+        <ion-item>
+          <ion-icon name="cash"></ion-icon>
+          Holdings: {{Game.holdings}}</ion-item>
+        <ion-item>
+          <ion-icon name="people"></ion-icon>
+          Children: {{Game.children}}</ion-item>
+        <ion-item>
+          <ion-icon name="card"></ion-icon>
+          Promisary Note: {{Game.promisary_note}}</ion-item>          
+      </ion-list>
+  </ion-card>
+
+  <ion-card class="cardDetails" *ngIf="Game">
+      <ion-list class="action-sheets-basic-page">
+        <ion-list-header>
+          <h1 color="light">Cards</h1>
+        </ion-list-header>
+        <hr>        
+        <ion-item>
+          <button ion-button block (click)="openMenu('share')">
+              Share a wealth card: {{Game.share_card}}
+          </button>
+        </ion-item>
+        <ion-item>
+          <button ion-button block (click)="openMenu('exemption')" color="danger">
+            Use Exempt card: {{Game.exemption_card}}
+          </button>
+        </ion-item>
+        <ion-item>
+          <button ion-button block (click)="openRevenge()">
+            Revenge
+          </button>
+        </ion-item>
+      </ion-list>
+  </ion-card>
+
+  <ion-card class="insuranceDetails" *ngIf="Game">
+    <ion-list *ngIf="Game.insurance.length>0">
+      <ion-list-header>
+        <h1 color="light">Insurance</h1>
+      </ion-list-header>
+      <hr>        
+      <ion-item *ngFor="let insurance of Game.insurance">{{insurance}}</ion-item>         
+    </ion-list>
+  </ion-card>
+</ion-content>
